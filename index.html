@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HACKER CLOCK - Andar</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box;}
+
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+background: #000;
+font-family: 'Share Tech Mono', monospace;
+overflow: hidden;
+}
+
+/* Loading Screen */
+#loader {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: #000;
+z-index: 9999;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+color: #00ff41;
+}
+
+.loader-text {
+font-size: 18px;
+margin-bottom: 20px;
+animation: blink 1s infinite;
+}
+
+.progress-bar {
+width: 300px;
+height: 4px;
+background: #003300;
+border-radius: 2px;
+overflow: hidden;
+}
+
+.progress-fill {
+height: 100%;
+width: 0%;
+background: #00ff41;
+box-shadow: 0 0 10px #00ff41;
+animation: loading 3s forwards;
+}
+
+@keyframes loading {
+to { width: 100%;}
+}
+
+@keyframes blink {
+0%, 50% { opacity: 1;}
+51%, 100% { opacity: 0;}
+}
+
+/* Matrix scanline */
+body::before {
+content: '';
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.03) 50%);
+background-size: 100% 4px;
+animation: scanline 8s linear infinite;
+pointer-events: none;
+z-index: -1;
+}
+
+@keyframes scanline {
+0% { transform: translateY(0);}
+100% { transform: translateY(100vh);}
+}
+
+.container {
+text-align: center;
+padding: 50px 60px;
+background: rgba(0, 20, 0, 0.8);
+border: 2px solid #00ff41;
+border-radius: 5px;
+box-shadow: 0 0 30px rgba(0, 255, 65, 0.5), inset 0 0 20px rgba(0, 255, 65, 0.1);
+position: relative;
+opacity: 0;
+animation: fadeIn 1s forwards;
+animation-delay: 3s;
+}
+
+@keyframes fadeIn {
+to { opacity: 1;}
+}
+
+.container::before {
+content: '[ SYSTEM ONLINE ]';
+position: absolute;
+top: -12px;
+left: 20px;
+background: #000;
+color: #00ff41;
+padding: 0 10px;
+font-size: 12px;
+}
+
+.nama {
+font-size: 28px;
+color: #00ff41;
+margin-bottom: 25px;
+letter-spacing: 5px;
+text-transform: uppercase;
+text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
+animation: flicker 3s infinite alternate;
+}
+
+@keyframes flicker {
+0%, 100% { opacity: 1;}
+50% { opacity: 0.8;}
+}
+
+.waktu {
+font-size: 80px;
+font-weight: normal;
+color: #00ff41;
+text-shadow: 0 0 15px #00ff41, 0 0 30px #00ff41;
+margin-bottom: 15px;
+position: relative;
+}
+
+.waktu::after {
+content: '_';
+animation: blinkCursor 1s infinite;
+}
+
+@keyframes blinkCursor {
+0%, 50% { opacity: 1;}
+51%, 100% { opacity: 0;}
+}
+
+.tanggal {
+font-size: 16px;
+color: #00cc33;
+letter-spacing: 3px;
+}
+
+.status {
+margin-top: 20px;
+font-size: 12px;
+color: #00ff41;
+}
+
+.status span {
+display: inline-block;
+width: 8px; height: 8px;
+background: #00ff41;
+border-radius: 50%;
+margin-right: 5px;
+box-shadow: 0 0 10px #00ff41;
+animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+0%, 100% { opacity: 1;}
+50% { opacity: 0.3;}
+}
+
+.glitch {
+animation: glitchAnim 0.15s ease-in-out;
+}
+
+@keyframes glitchAnim {
+0% { transform: translate(0);}
+20% { transform: translate(-2px, 2px);}
+40% { transform: translate(-2px, -2px);}
+60% { transform: translate(2px, 2px);}
+80% { transform: translate(2px, -2px);}
+100% { transform: translate(0);}
+}
+
+@media (max-width: 600px) {
+.waktu { font-size: 48px;}
+.nama { font-size: 20px;}
+.progress-bar { width: 250px;}
+}
+</style>
+</head>
+<body>
+<!-- Loading Screen -->
+<div id="loader">
+<div class="loader-text" id="loaderText">INITIALIZING SYSTEM...</div>
+<div class="progress-bar"><div class="progress-fill"></div></div>
+</div>
+
+<div class="container">
+<div class="nama">Andar</div>
+<div class="waktu" id="jam">00:00:00</div>
+<div class="tanggal" id="tanggal">SENIN,01 JANUARI2026</div>
+<div class="status"><span></span>CONNECTION SECURE</div>
+</div>
+
+<script>
+// Loading sequence
+const loaderTexts = [
+'INITIALIZING SYSTEM...',
+'LOADING MODULES...',
+'ESTABLISHING CONNECTION...',
+'ACCESS GRANTED',
+'WELCOME ANDAR'
+];
+
+let textIndex = 0;
+const loaderTextEl = document.getElementById('loaderText');
+
+const textInterval = setInterval(() => {
+textIndex++;
+if (textIndex < loaderTexts.length) {
+loaderTextEl.textContent = loaderTexts[textIndex];
+} else {
+clearInterval(textInterval);
+setTimeout(() => {
+document.getElementById('loader').style.display = 'none';
+},500);
+}
+},600);
+
+// Sound effect pakai Web Audio API
+function playTypeSound() {
+try {
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const oscillator = audioCtx.createOscillator();
+const gainNode = audioCtx.createGain();
+
+oscillator.connect(gainNode);
+gainNode.connect(audioCtx.destination);
+
+oscillator.frequency.value = Math.random() *200 +800; // Random pitch
+gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime +0.05);
+
+oscillator.start(audioCtx.currentTime);
+oscillator.stop(audioCtx.currentTime +0.05);
+} catch(e) {}
+}
+
+// Clock function
+function updateClock() {
+const now = new Date();
+
+let jam = now.getHours().toString().padStart(2, '0');
+let menit = now.getMinutes().toString().padStart(2, '0');
+let detik = now.getSeconds().toString().padStart(2, '0');
+
+const jamEl = document.getElementById('jam');
+jamEl.textContent = `${jam}:${menit}:${detik}`;
+jamEl.classList.add('glitch');
+playTypeSound();
+setTimeout(() => jamEl.classList.remove('glitch'),150);
+
+const hari = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
+const bulan = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI',
+'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
+
+const namaHari = hari[now.getDay()];
+const tgl = now.getDate().toString().padStart(2, '0');
+const namaBulan = bulan[now.getMonth()];
+const tahun = now.getFullYear();
+
+document.getElementById('tanggal').textContent = `${namaHari},${tgl} ${namaBulan}${tahun}`;
+}
+
+// Start
+setInterval(updateClock,1000);
+updateClock();
+</script>
+</body>
+</html>

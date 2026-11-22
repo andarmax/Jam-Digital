@@ -2,282 +2,246 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HACKER CLOCK - Andar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ANDAR_TE18 // SECURE TERMINAL</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-* { margin: 0; padding: 0; box-sizing: border-box;}
-
-body {
-display: flex;
-justify-content: center;
-align-items: center;
-min-height: 100vh;
-background: #000;
-font-family: 'Share Tech Mono', monospace;
-overflow: hidden;
-}
-
-/* Loading Screen */
-#loader {
-position: fixed;
-top: 0; left: 0;
-width: 100%; height: 100%;
-background: #000;
-z-index: 9999;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-color: #00ff41;
-}
-
-.loader-text {
-font-size: 18px;
-margin-bottom: 20px;
-animation: blink 1s infinite;
-}
-
-.progress-bar {
-width: 300px;
-height: 4px;
-background: #003300;
-border-radius: 2px;
-overflow: hidden;
-}
-
-.progress-fill {
-height: 100%;
-width: 0%;
-background: #00ff41;
-box-shadow: 0 0 10px #00ff41;
-animation: loading 3s forwards;
-}
-
-@keyframes loading {
-to { width: 100%;}
-}
-
-@keyframes blink {
-0%, 50% { opacity: 1;}
-51%, 100% { opacity: 0;}
-}
-
-/* Matrix scanline */
-body::before {
-content: '';
-position: fixed;
-top: 0; left: 0;
-width: 100%; height: 100%;
-background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.03) 50%);
-background-size: 100% 4px;
-animation: scanline 8s linear infinite;
-pointer-events: none;
-z-index: -1;
-}
-
-@keyframes scanline {
-0% { transform: translateY(0);}
-100% { transform: translateY(100vh);}
-}
-
-.container {
-text-align: center;
-padding: 50px 60px;
-background: rgba(0, 20, 0, 0.8);
-border: 2px solid #00ff41;
-border-radius: 5px;
-box-shadow: 0 0 30px rgba(0, 255, 65, 0.5), inset 0 0 20px rgba(0, 255, 65, 0.1);
-position: relative;
-opacity: 0;
-animation: fadeIn 1s forwards;
-animation-delay: 3s;
-}
-
-@keyframes fadeIn {
-to { opacity: 1;}
-}
-
-.container::before {
-content: '[ SYSTEM ONLINE ]';
-position: absolute;
-top: -12px;
-left: 20px;
-background: #000;
-color: #00ff41;
-padding: 0 10px;
-font-size: 12px;
-}
-
-.nama {
-font-size: 28px;
-color: #00ff41;
-margin-bottom: 25px;
-letter-spacing: 5px;
-text-transform: uppercase;
-text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
-animation: flicker 3s infinite alternate;
-}
-
-@keyframes flicker {
-0%, 100% { opacity: 1;}
-50% { opacity: 0.8;}
-}
-
-.waktu {
-font-size: 80px;
-font-weight: normal;
-color: #00ff41;
-text-shadow: 0 0 15px #00ff41, 0 0 30px #00ff41;
-margin-bottom: 15px;
-position: relative;
-}
-
-.waktu::after {
-content: '_';
-animation: blinkCursor 1s infinite;
-}
-
-@keyframes blinkCursor {
-0%, 50% { opacity: 1;}
-51%, 100% { opacity: 0;}
-}
-
-.tanggal {
-font-size: 16px;
-color: #00cc33;
-letter-spacing: 3px;
-}
-
-.status {
-margin-top: 20px;
-font-size: 12px;
-color: #00ff41;
-}
-
-.status span {
-display: inline-block;
-width: 8px; height: 8px;
-background: #00ff41;
-border-radius: 50%;
-margin-right: 5px;
-box-shadow: 0 0 10px #00ff41;
-animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-0%, 100% { opacity: 1;}
-50% { opacity: 0.3;}
-}
-
-.glitch {
-animation: glitchAnim 0.15s ease-in-out;
-}
-
-@keyframes glitchAnim {
-0% { transform: translate(0);}
-20% { transform: translate(-2px, 2px);}
-40% { transform: translate(-2px, -2px);}
-60% { transform: translate(2px, 2px);}
-80% { transform: translate(2px, -2px);}
-100% { transform: translate(0);}
-}
-
-@media (max-width: 600px) {
-.waktu { font-size: 48px;}
-.nama { font-size: 20px;}
-.progress-bar { width: 250px;}
-}
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:#000;font-family:'VT323','Share Tech Mono',monospace;overflow:hidden}
+#matrix{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:.12}
+#wallpaper{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;background-image:url('https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&q=80');background-size:cover;background-position:center;opacity:.22;filter:grayscale(1) brightness(.5) contrast(1.2)}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 50%,rgba(0,255,0,.03) 50%);background-size:100% 4px;pointer-events:none;z-index:-1}
+#panicScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:20000;display:none;justify-content:center;align-items:center;color:#111;font-size:12px}
+#lockScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:10000;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#00ff41;padding:20px;text-align:center}
+.skull-big{font-size:72px;filter:drop-shadow(0 0 20px #00ff41);animation:float 2s infinite alternate}
+@keyframes float{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+.lock-title{font-size:34px;text-shadow:0 0 20px #00ff41}
+.lock-sub{font-size:15px;color:#008822;margin:10px 0 20px}
+.lock-input{background:#001100;border:2px solid #00ff41;color:#00ff41;font-family:'VT323',monospace;font-size:24px;padding:12px 20px;width:300px;max-width:90%;text-align:center;outline:none}
+.lock-btn{margin-top:20px;background:transparent;border:2px solid #00ff41;color:#00ff41;font-family:'VT323',monospace;font-size:18px;padding:10px 30px;cursor:pointer}
+.lock-btn:hover{background:#00ff41;color:#000;box-shadow:0 0 20px #00ff41}
+.lock-error{color:#ff0033;margin-top:15px;opacity:0}
+.lock-error.show{opacity:1}
+#loader{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:9999;display:none;flex-direction:column;justify-content:center;align-items:center;color:#00ff41}
+.progress-bar{width:300px;max-width:80%;height:6px;background:#003300;overflow:hidden;margin-top:15px}
+.progress-fill{height:100%;width:0%;background:#00ff41;box-shadow:0 0 10px #00ff41}
+.container{text-align:center;padding:42px 45px 22px;background:rgba(0,20,0,.9);border:2px solid #00ff41;border-radius:6px;box-shadow:0 0 30px rgba(0,255,65,.5);position:relative;max-width:740px;width:93%;display:none}
+.container::before{content:'[ROOT@ANDAR:~]';position:absolute;top:-12px;left:20px;background:#000;color:#00ff41;padding:0 10px;font-size:12px}
+.nama{font-size:26px;color:#00ff41;letter-spacing:5px;text-shadow:0 0 10px #00ff41}
+.waktu{font-size:clamp(42px,8vw,72px);color:#00ff41;text-shadow:0 0 15px #00ff41}
+.tanggal{font-size:14px;color:#00aa33;letter-spacing:2px;margin-bottom:12px}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:12px;font-size:12px;text-align:left;color:#00ff41}
+.info-item{background:rgba(0,255,65,.05);padding:8px;border-left:2px solid #00ff41}
+.info-label{color:#00aa33;font-weight:bold;display:block}
+.cmd-input{width:100%;background:#000;border:none;color:#00ff41;font-family:'VT323';font-size:17px;padding:8px;outline:none}
+.log-container{height:140px;overflow-y:auto;background:#000;padding:10px;margin-top:10px;border:1px solid #003300;font-size:12px;text-align:left;color:#00ff41}
+.status{margin-top:12px;font-size:12px;color:#00ff41}
+.status span{display:inline-block;width:8px;height:8px;background:#00ff41;border-radius:50%;margin-right:5px;box-shadow:0 0 10px #00ff41}
+.btn-group{display:flex;gap:8px;margin-top:10px;justify-content:center;flex-wrap:wrap}
+.btn{background:transparent;border:1px solid #00ff41;color:#00ff41;padding:7px 12px;font-size:12px;cursor:pointer;font-family:'VT323'}
+.btn:hover{background:#003300}
+.btn.danger{border-color:#ff0033;color:#ff0033}
+.btn.danger:hover{background:#330000}
+.btn.panic{background:#ff0033;color:#000;font-weight:bold}
+.top-bar{position:absolute;top:10px;right:10px;display:flex;gap:5px}
+.top-btn{background:transparent;border:1px solid #00ff41;color:#00ff41;padding:4px 8px;font-size:11px;cursor:pointer}
+#hackOverlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:5000;display:none;flex-direction:column;justify-content:center;align-items:center;color:#00ff41;padding:20px;text-align:center}
+body.red-theme .container{border-color:#ff0033;box-shadow:0 0 30px rgba(255,0,51,.5)}
+body.red-theme .nama,body.red-theme .waktu,body.red-theme .btn{color:#ff0033}
+body.blue-theme .container{border-color:#008aff;box-shadow:0 0 30px rgba(0,142,255,.5)}
+body.blue-theme .nama,body.blue-theme .waktu,body.blue-theme .btn{color:#008aff}
 </style>
 </head>
 <body>
-<!-- Loading Screen -->
-<div id="loader">
-<div class="loader-text" id="loaderText">INITIALIZING SYSTEM...</div>
-<div class="progress-bar"><div class="progress-fill"></div></div>
+<canvas id="matrix"></canvas>
+<div id="wallpaper"></div>
+
+<div id="panicScreen" onclick="unPanic()">TAP TO WAKE</div>
+
+<div id="lockScreen">
+<div class="skull-big">💀</div>
+<div class="lock-title">HACKER TERMINAL v4.0</div>
+<div class="lock-sub">RESTRICTED ACCESS // ONLY ANDAR_TE18</div>
+<input type="password" id="passInput" class="lock-input" placeholder="ENTER PASSWORD" autocomplete="off">
+<button class="lock-btn" onclick="checkPass()">🔓 UNLOCK SYSTEM</button>
+<div id="lockError" class="lock-error">ACCESS DENIED!</div>
+<div style="margin-top:18px;font-size:12px;color:#006622">Hint: Andar_TE** | Tekan ESC untuk PANIC</div>
 </div>
 
-<div class="container">
-<div class="nama">Andar</div>
-<div class="waktu" id="jam">00:00:00</div>
-<div class="tanggal" id="tanggal">SENIN,01 JANUARI2026</div>
-<div class="status"><span></span>CONNECTION SECURE</div>
+<div id="loader">
+<div style="font-size:50px">☠️</div>
+<div id="loaderText">> BYPASSING SECURITY...</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="loaderPercent">0%</div>
+</div>
+
+<div id="hackOverlay">
+<div style="font-size:50px">⚡</div>
+<div style="font-size:24px" id="hackTitle">TARGET LOCKED...</div>
+<div style="font-size:14px;margin-top:10px" id="hackLog">Initializing...</div>
+<div class="progress-bar" style="width:280px"><div class="progress-fill" id="hackFill"></div></div>
+<div id="hackPct">0%</div>
+</div>
+
+<div class="container" id="mainContainer">
+<div class="top-bar">
+<button class="top-btn" id="soundBtn" onclick="toggleSound()">🔊 SOUND: ON</button>
+<button class="top-btn" onclick="toggleWallpaper()">💀 WALLPAPER</button>
+</div>
+<div class="nama">☠️ ANDAR_TE18 ☠️</div>
+<div class="waktu" id="clock">00:00:00</div>
+<div class="tanggal" id="date">Loading...</div>
+<div class="info-grid">
+<div class="info-item"><span class="info-label">USER</span>Andar_TE18</div>
+<div class="info-item"><span class="info-label">STATUS</span>ONLINE - HACKER PRO</div>
+<div class="info-item"><span class="info-label">SYSTEM</span>TERMINAL v4.0 FINAL</div>
+<div class="info-item"><span class="info-label">IP / VPN</span><span id="fakeIP">103.45.12.88 - JAKARTA</span></div>
+<div class="info-item"><span class="info-label">PUBG NICK</span>꧁☠️ANDAR_JR☠️꧂</div>
+<div class="info-item"><span class="info-label">SECURITY</span>ENCRYPTED + VPN + TOR</div>
+</div>
+<div style="text-align:left">
+<div style="font-size:12px;color:#00aa33">root@andar:~$ ketik 'help' | 'hack' | 'panic'</div>
+<input type="text" id="cmdInput" class="cmd-input" placeholder="> ketik perintah lalu Enter..." autocomplete="off">
+<div class="log-container" id="logBox">
+<div>> System initialized...</div>
+<div>> Welcome back, Andar_TE18...</div>
+<div>> v4.0 FINAL loaded. Ketik 'help'</div>
+</div>
+</div>
+<div class="status"><span></span> SYSTEM ONLINE | VPN ACTIVE | <span id="pingVal">PING 12ms</span></div>
+<div class="btn-group">
+<button class="btn" onclick="runCmd('hack')">⚡ HACK</button>
+<button class="btn" onclick="runCmd('scan')">📡 SCAN</button>
+<button class="btn" onclick="runCmd('whoami')">👤 WHOAMI</button>
+<button class="btn" onclick="runCmd('clear')">🧹 CLEAR</button>
+<button class="btn" onclick="cycleTheme()">🎨 THEME</button>
+<button class="btn panic" onclick="panicMode()">🚨 PANIC</button>
+<button class="btn danger" onclick="logout()">🔒 LOGOUT</button>
+</div>
+<div style="font-size:11px;color:#006622;margin-top:8px">PANIC = Layar hitam total | ESC = Langsung ke-lock | Hack = Getar + Animasi</div>
 </div>
 
 <script>
-// Loading sequence
-const loaderTexts = [
-'INITIALIZING SYSTEM...',
-'LOADING MODULES...',
-'ESTABLISHING CONNECTION...',
-'ACCESS GRANTED',
-'WELCOME ANDAR'
-];
+const PASSWORD="Andar_TE18";
+let soundOn=true, audioCtx=null, musicInterval=null;
+function initAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); }
+function vibrate(p){ if(navigator.vibrate) navigator.vibrate(p); }
+function playClick(){ if(!soundOn||!audioCtx) return; const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.type='square'; o.frequency.value=1200+Math.random()*800; g.gain.value=.04; g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.05); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+.05); }
+function playGranted(){ if(!soundOn||!audioCtx) return; [523,659,784,1046].forEach((f,i)=>{ const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.frequency.value=f; g.gain.value=.08; o.connect(g); g.connect(audioCtx.destination); o.start(audioCtx.currentTime+i*.12); o.stop(audioCtx.currentTime+i*.12+.25); }); }
+function playDenied(){ if(!soundOn||!audioCtx) return; const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.type='sawtooth'; o.frequency.value=180; g.gain.value=.1; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+.3); }
+function playHackSound(){ if(!soundOn||!audioCtx) return; for(let i=0;i<5;i++){ const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.frequency.value=200+i*150; g.gain.value=.06; o.connect(g); g.connect(audioCtx.destination); o.start(audioCtx.currentTime+i*.15); o.stop(audioCtx.currentTime+i*.15+.15); } }
+function startMusic(){ if(!audioCtx) return; if(musicInterval) clearInterval(musicInterval); musicInterval=setInterval(()=>{ if(!soundOn) return; const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.type='sine'; o.frequency.value=55+Math.random()*20; g.gain.value=.03; g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+1.2); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+1.2); },1500); }
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent=soundOn?'🔊 SOUND: ON':'🔇 SOUND: OFF'; if(soundOn) initAudio(); }
+function toggleWallpaper(){ const w=document.getElementById('wallpaper'); w.style.opacity=w.style.opacity==='0'?'0.22':'0'; playClick(); }
 
-let textIndex = 0;
-const loaderTextEl = document.getElementById('loaderText');
-
-const textInterval = setInterval(() => {
-textIndex++;
-if (textIndex < loaderTexts.length) {
-loaderTextEl.textContent = loaderTexts[textIndex];
-} else {
-clearInterval(textInterval);
-setTimeout(() => {
-document.getElementById('loader').style.display = 'none';
-},500);
+function checkPass(){
+  initAudio();
+  const val=document.getElementById('passInput').value;
+  const err=document.getElementById('lockError');
+  if(val===PASSWORD){
+    playGranted(); vibrate([50,50,100]);
+    document.getElementById('lockScreen').style.display='none';
+    const loader=document.getElementById('loader'); loader.style.display='flex';
+    const texts=['> BYPASSING SECURITY...','> INJECTING PAYLOAD...','> BYPASSING FIREWALL...','> ACCESS GRANTED!'];
+    let p=0, ti=0;
+    const fill=document.getElementById('progressFill'), pct=document.getElementById('loaderPercent'), lt=document.getElementById('loaderText');
+    const iv=setInterval(()=>{
+      p+=Math.floor(Math.random()*12)+5;
+      if(p>=100){ p=100; clearInterval(iv); setTimeout(()=>{ loader.style.display='none'; document.getElementById('mainContainer').style.display='block'; document.getElementById('cmdInput').focus(); startMusic(); },500); }
+      if(p>ti*25 && ti<texts.length){ lt.textContent=texts[ti]; ti++; }
+      fill.style.width=p+'%'; pct.textContent=p+'%';
+    },110);
+  } else {
+    playDenied(); vibrate([200,100,200]);
+    err.classList.add('show'); document.getElementById('passInput').value='';
+    setTimeout(()=>err.classList.remove('show'),2000);
+  }
 }
-},600);
-
-// Sound effect pakai Web Audio API
-function playTypeSound() {
-try {
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const oscillator = audioCtx.createOscillator();
-const gainNode = audioCtx.createGain();
-
-oscillator.connect(gainNode);
-gainNode.connect(audioCtx.destination);
-
-oscillator.frequency.value = Math.random() *200 +800; // Random pitch
-gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime +0.05);
-
-oscillator.start(audioCtx.currentTime);
-oscillator.stop(audioCtx.currentTime +0.05);
-} catch(e) {}
+function logout(){
+  playClick(); vibrate(50);
+  document.getElementById('mainContainer').style.display='none';
+  document.getElementById('passInput').value='';
+  document.getElementById('lockScreen').style.display='flex';
+  document.getElementById('passInput').focus();
+  if(musicInterval) clearInterval(musicInterval);
 }
-
-// Clock function
-function updateClock() {
-const now = new Date();
-
-let jam = now.getHours().toString().padStart(2, '0');
-let menit = now.getMinutes().toString().padStart(2, '0');
-let detik = now.getSeconds().toString().padStart(2, '0');
-
-const jamEl = document.getElementById('jam');
-jamEl.textContent = `${jam}:${menit}:${detik}`;
-jamEl.classList.add('glitch');
-playTypeSound();
-setTimeout(() => jamEl.classList.remove('glitch'),150);
-
-const hari = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
-const bulan = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI',
-'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
-
-const namaHari = hari[now.getDay()];
-const tgl = now.getDate().toString().padStart(2, '0');
-const namaBulan = bulan[now.getMonth()];
-const tahun = now.getFullYear();
-
-document.getElementById('tanggal').textContent = `${namaHari},${tgl} ${namaBulan}${tahun}`;
+function panicMode(){
+  vibrate([100,50,100]);
+  document.getElementById('panicScreen').style.display='flex';
+  document.getElementById('mainContainer').style.display='none';
 }
+function unPanic(){
+  document.getElementById('panicScreen').style.display='none';
+  document.getElementById('passInput').value='';
+  document.getElementById('lockScreen').style.display='flex';
+}
+document.getElementById('passInput').addEventListener('keypress', e=>{ if(e.key==='Enter') checkPass(); });
+document.getElementById('passInput').addEventListener('input', ()=>playClick());
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(document.getElementById('mainContainer').style.display==='block'){ panicMode(); } } });
 
-// Start
-setInterval(updateClock,1000);
-updateClock();
+function updateClock(){
+  const now=new Date();
+  document.getElementById('clock').textContent=now.toLocaleTimeString('id-ID',{hour12:false});
+  document.getElementById('date').textContent=now.toLocaleDateString('id-ID',{weekday:'long', day:'numeric', month:'long', year:'numeric'}).toUpperCase();
+}
+setInterval(updateClock,1000); updateClock();
+
+// Fake IP + Ping berubah sendiri biar keliatan hidup
+setInterval(()=>{
+  const ip = Math.floor(Math.random()*200+10)+'.'+Math.floor(Math.random()*200)+'.'+Math.floor(Math.random()*200)+'.'+Math.floor(Math.random()*200);
+  const cities=['JAKARTA','SINGAPORE','TOKYO','BERLIN','YOGYAKARTA','SEOUL'];
+  document.getElementById('fakeIP').textContent=ip+' - '+cities[Math.floor(Math.random()*cities.length)];
+  document.getElementById('pingVal').textContent='PING '+Math.floor(Math.random()*40+8)+'ms';
+},4000);
+
+// MATRIX
+const canvas=document.getElementById('matrix'), ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+const chars='01ANDAR_TE18☠️$#@<>/\\';
+const drops=Array(Math.floor(canvas.width/16)).fill(1);
+function drawMatrix(){
+  ctx.fillStyle='rgba(0,0,0,0.05)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#00ff41'; ctx.font='16px monospace';
+  for(let i=0;i<drops.length;i++){ ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*16, drops[i]*16); if(drops[i]*16>canvas.height && Math.random()>0.975) drops[i]=0; drops[i]++; }
+}
+setInterval(drawMatrix,50);
+
+// TERMINAL + HACK ANIMATION
+const logBox=document.getElementById('logBox');
+function addLog(t){ const d=document.createElement('div'); d.textContent='> '+t; logBox.appendChild(d); logBox.scrollTop=logBox.scrollHeight; }
+function doHack(){
+  playHackSound(); vibrate([100,50,100,50,200]);
+  const ov=document.getElementById('hackOverlay'); ov.style.display='flex';
+  const logs=['Target locked...','Bypassing firewall...','Injecting payload...','Cracking password...','ACCESS GRANTED!'];
+  let p=0, li=0;
+  const fill=document.getElementById('hackFill'), pct=document.getElementById('hackPct'), lg=document.getElementById('hackLog'), title=document.getElementById('hackTitle');
+  const iv=setInterval(()=>{
+    p+=Math.floor(Math.random()*10)+4;
+    if(p>=100){ p=100; clearInterval(iv); title.textContent='☠️ HACK BERHASIL! ☠️'; vibrate([200,100,300]); setTimeout(()=>{ ov.style.display='none'; title.textContent='TARGET LOCKED...'; addLog('HACK BERHASIL! Target diretas oleh ANDAR_TE18 ☠️'); },1200); }
+    if(p>li*20 && li<logs.length){ lg.textContent=logs[li]; li++; }
+    fill.style.width=p+'%'; pct.textContent=p+'%';
+  },150);
+}
+function runCmd(cmd){
+  const c=cmd.toLowerCase().trim();
+  addLog('root@andar:~$ '+c);
+  if(c==='help') addLog('help | hack | scan | whoami | clear | logout | panic | theme red/blue/green');
+  else if(c==='hack') doHack();
+  else if(c==='panic') panicMode();
+  else if(c==='scan'){ addLog('Scanning...'); setTimeout(()=>addLog('3 device rentan ditemukan. 192.168.1.1 - OPEN'),800); }
+  else if(c==='whoami') addLog('Andar_TE18 - Hacker Pro dari Yogyakarta ☠️ | Level: PRO');
+  else if(c==='logout') logout();
+  else if(c==='clear') logBox.innerHTML='';
+  else if(c==='theme red'){ document.body.className='red-theme'; addLog('Tema RED'); }
+  else if(c==='theme blue'){ document.body.className='blue-theme'; addLog('Tema BLUE'); }
+  else if(c==='theme green'){ document.body.className=''; addLog('Tema GREEN'); }
+  else if(c===''){}
+  else addLog('Perintah tidak ditemukan: '+c);
+}
+document.getElementById('cmdInput').addEventListener('keypress', e=>{ if(e.key==='Enter'){ playClick(); runCmd(e.target.value); e.target.value=''; } });
+document.getElementById('cmdInput').addEventListener('input', ()=>playClick());
+let themeIdx=0;
+function cycleTheme(){ const t=['','red-theme','blue-theme']; themeIdx=(themeIdx+1)%t.length; document.body.className=t[themeIdx]; playClick(); }
 </script>
 </body>
 </html>
